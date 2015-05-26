@@ -158,16 +158,8 @@ var Select = React.createClass({
 
 	componentDidUpdate: function() {
 		var self = this;
-
-		if (!this.props.disabled && this._focusAfterUpdate) {
-			clearTimeout(this._blurTimeout);
-
-			this._focusTimeout = setTimeout(function() {
-				self.getInputNode().focus();
-				self._focusAfterUpdate = false;
-			}, 50);
-		}
-
+		clearTimeout(this._blurTimeout);
+		
 		if (this._focusedOptionReveal) {
 			if (this.refs.focused && this.refs.menu) {
 				var focusedDOM = this.refs.focused.getDOMNode();
@@ -243,9 +235,6 @@ var Select = React.createClass({
 	},
 
 	setValue: function(value, focusAfterUpdate) {
-		if (focusAfterUpdate || focusAfterUpdate === undefined) {
-			this._focusAfterUpdate = true;
-		}
 		var newState = this.getStateFromValue(value);
 		newState.isOpen = false;
 		this.fireChangeEvent(newState);
@@ -342,7 +331,6 @@ var Select = React.createClass({
 		var self = this;
 
 		this._blurTimeout = setTimeout(function() {
-			if (self._focusAfterUpdate) return;
 
 			self.setState({
 				isFocused: false
